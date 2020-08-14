@@ -1,13 +1,15 @@
 import React, { useState, useEffect } from "react";
 import CourseForm from "./CourseForm";
-import { getAuthors } from "../api/authorApi";
 import { toast } from "react-toastify";
 import courseStore from "../stores/courseStore";
 import * as courseActions from "../actions/courseActions";
+import * as authorActions from "../actions/authorActions";
+import authorStore from "../stores/authorStore";
 
 const ManageCoursePage = (props) => {
   const [errors, setErrors] = useState({});
-
+  const [courses, setCourses] = useState(courseStore.getCourses());
+  const [authors, setAuthors] = useState(authorStore.getAuthors());
   const [course, setCourse] = useState({
     id: null,
     slug: "",
@@ -16,23 +18,31 @@ const ManageCoursePage = (props) => {
     cateogry: "",
   });
 
-  const [authors, setAuthors] = useState([
-    {
-      id: null,
-      name: "",
-    },
-  ]);
-
   useEffect(() => {
-    getAuthors().then((response) => {
-      setAuthors(response);
-    });
+    courseStore.addChangeListener(onCourseChange);
+    authorStore.addChangeListener(onAuthorChange);
+    if (authorStore.getAuthors().length === 0) authorActions.loadAuthors();
 
     const slug = props.match.params.slug;
-    if (slug) {
+    if (courses.length === 0) {
+      courseActions.loadCourses();
+    } else if (slug) {
       setCourse(courseStore.getCourseBySlug(slug));
     }
-  }, [props.match.params.slug]);
+
+    return () => {
+      authorStore.removeChangeListener(onAuthorChange);
+      courseStore.removeChangeListener(onCourseChange);
+    };
+  }, [props.match.params.slug, courses.length]);
+
+  const onAuthorChange = () => {
+    setAuthors(authorStore.getAuthors());
+  };
+
+  const onCourseChange = () => {
+    setCourses(courseStore.getCourses());
+  };
 
   const handleChange = ({ target }) => {
     setCourse({
@@ -66,6 +76,14 @@ const ManageCoursePage = (props) => {
     });
   };
 
+  const handleDelete = (event) => {
+    event.preventDefault();
+    courseActions.deleteCourse(course.id).then(() => {
+      toast.success("Course deleted.");
+      props.history.push("/courses");
+    });
+  };
+
   return (
     <>
       <h2>Manage Course</h2>
@@ -74,6 +92,7 @@ const ManageCoursePage = (props) => {
         errors={errors}
         onChange={handleChange}
         onSubmit={handleSubmit}
+        onDelete={handleDelete}
         authors={authors}
       />
     </>

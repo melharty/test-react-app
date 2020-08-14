@@ -41,6 +41,15 @@ const CourseForm = (props) => {
         onClick={props.onSubmit}
         onChange={props.onSubmit}
       />
+      {"  "}
+      {props.course && props.course.id && (
+        <input
+          type="button"
+          value="Delete"
+          className="btn btn-danger"
+          onClick={props.onDelete}
+        />
+      )}
     </form>
   );
 };

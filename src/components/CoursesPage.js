@@ -1,26 +1,33 @@
 import React, { useState, useEffect } from "react";
-import { getAuthors } from "../api/authorApi";
 import courseStore from "../stores/courseStore";
+import authorStore from "../stores/authorStore";
 import CourseList from "./CourseList";
 import { Link } from "react-router-dom";
 import { loadCourses } from "../actions/courseActions";
+import { loadAuthors } from "../actions/authorActions";
 
 function CoursesPage() {
   const [courses, setCourses] = useState(courseStore.getCourses());
-  const [authors, setAuthors] = useState([]);
+  const [authors, setAuthors] = useState(authorStore.getAuthors());
 
   useEffect(() => {
-    courseStore.addChangeListener(onChange);
-    getAuthors().then((response) => {
-      setAuthors(response);
-    });
+    courseStore.addChangeListener(onCourseChange);
+    authorStore.addChangeListener(onAuthorChange);
     if (courseStore.getCourses().length === 0) loadCourses();
-    return () => courseStore.removeChangeListener(onChange);
+    if (authorStore.getAuthors().length === 0) loadAuthors();
+    return () => {
+      courseStore.removeChangeListener(onCourseChange);
+      authorStore.removeChangeListener(onAuthorChange);
+    };
   }, []);
 
-  function onChange() {
+  const onCourseChange = () => {
     setCourses(courseStore.getCourses());
-  }
+  };
+
+  const onAuthorChange = () => {
+    setAuthors(authorStore.getAuthors());
+  };
 
   return (
     <>

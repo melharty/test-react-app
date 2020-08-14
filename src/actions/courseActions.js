@@ -5,23 +5,25 @@ import actionTypes from "./actionTypes";
 export function saveCourse(course) {
   return courseApi.saveCourse(course).then((savedCourse) => {
     dispatcher.dispatch({
-      actionType: actionTypes.CREATE_COURSE,
+      actionType: course.id
+        ? actionTypes.UDPATE_COURSE
+        : actionTypes.CREATE_COURSE,
       course: savedCourse,
     });
   });
 }
 
 export function deleteCourse(courseId) {
-  courseApi.deleteCourse(courseId).then((response) => {
+  return courseApi.deleteCourse(courseId).then(() => {
     dispatcher.dispatch({
       actionType: actionTypes.DELETE_COURSE,
-      payload: response,
+      courseId: courseId,
     });
   });
 }
 
 export function loadCourses() {
-  courseApi.getCourses().then((loadedCourses) => {
+  return courseApi.getCourses().then((loadedCourses) => {
     dispatcher.dispatch({
       actionType: actionTypes.LOAD_COURSES,
       courses: loadedCourses,
