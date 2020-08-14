@@ -9,6 +9,10 @@ function HomePage() {
       <Link to="/about" className="btn btn-primary">
         About
       </Link>
+      {"  "}
+      <Link to="/courses" className="btn btn-primary">
+        Courses
+      </Link>
     </div>
   );
 }
