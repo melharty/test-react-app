@@ -2,9 +2,9 @@
   "courses": [
     {
       "id": 1,
-      "title": "Securing React Apps with Auth0.1",
+      "title": "Securing React Apps with Auth0",
       "slug": "react-auth0-authentication-security",
-      "authorId": 4,
+      "authorId": 1,
       "category": "JavaScript"
     },
     {
@@ -69,33 +69,6 @@
       "slug": "web-components-shadow-dom",
       "authorId": 1,
       "category": "HTML5"
-    },
-    {
-      "id": 11,
-      "slug": "my-course",
-      "title": "My Course",
-      "authorId": 4,
-      "cateogry": "",
-      "category": "Cat",
-      "createdAt": 1597409590594
-    },
-    {
-      "id": 12,
-      "slug": "course-1",
-      "title": "Course 1",
-      "authorId": 4,
-      "cateogry": "",
-      "category": "Cat 1",
-      "createdAt": 1597416075539
-    },
-    {
-      "id": 13,
-      "slug": "course-2",
-      "title": "Course 2",
-      "authorId": 3,
-      "cateogry": "",
-      "category": "Cat 2",
-      "createdAt": 1597416083383
     }
   ],
   "authors": [
@@ -113,7 +86,8 @@
     },
     {
       "id": 4,
-      "name": "Mohamed El Harty"
+      "name": "Mohamed El Harty",
+      "createdAt": 1597454372632
     }
   ]
 }

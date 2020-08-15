@@ -23,7 +23,7 @@ class AuthorStore extends EventEmitter {
   }
 
   getAuthorById(authorId) {
-    return _authors.find((a) => a.id === authorId);
+    return _authors.find((a) => a.id === parseInt(authorId, 10));
   }
 
   deleteAuthor(authorId) {
@@ -45,6 +45,15 @@ dispatcher.register((action) => {
     case actionTypes.LOAD_AUTHORS:
       _authors = action.authors;
       store.emitChange();
+      break;
+    case actionTypes.DELETE_AUTHOR:
+      _authors = _authors.filter((a) => a.id !== action.id);
+      store.emitChange();
+      break;
+    case actionTypes.UPDATE_AUTHOR:
+      _authors = _authors.map((myAuthor) => {
+        return myAuthor.id === action.author.id ? action.author : myAuthor;
+      });
       break;
     default:
       break;

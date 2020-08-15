@@ -1,7 +1,7 @@
 import React from "react";
 import PropTypes from "prop-types";
-import TextInput from "./common/TextInput";
-import SelectInput from "./common/SelectInput";
+import TextInput from "../common/TextInput";
+import SelectInput from "../common/SelectInput";
 
 const CourseForm = (props) => {
   return (
@@ -13,6 +13,7 @@ const CourseForm = (props) => {
         course={props.course}
         onChange={props.onChange}
         error={props.errors.title}
+        value={props.course.title}
       />
 
       <SelectInput
@@ -32,6 +33,7 @@ const CourseForm = (props) => {
         course={props.course}
         onChange={props.onChange}
         error={props.errors.category}
+        value={props.course.category}
       />
 
       <input

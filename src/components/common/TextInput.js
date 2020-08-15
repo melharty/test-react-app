@@ -25,7 +25,7 @@ const TextInput = (props) => {
           type="text"
           name={props.name}
           className={formClass}
-          value={props.course[props.name] || ""}
+          value={props.value || ""}
           onChange={props.onChange}
         />
       </div>

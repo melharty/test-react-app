@@ -1,10 +1,10 @@
 import React, { useState, useEffect } from "react";
 import CourseForm from "./CourseForm";
 import { toast } from "react-toastify";
-import courseStore from "../stores/courseStore";
-import * as courseActions from "../actions/courseActions";
-import * as authorActions from "../actions/authorActions";
-import authorStore from "../stores/authorStore";
+import courseStore from "../../stores/courseStore";
+import * as courseActions from "../../actions/courseActions";
+import * as authorActions from "../../actions/authorActions";
+import authorStore from "../../stores/authorStore";
 
 const ManageCoursePage = (props) => {
   const [errors, setErrors] = useState({});
@@ -27,14 +27,18 @@ const ManageCoursePage = (props) => {
     if (courses.length === 0) {
       courseActions.loadCourses();
     } else if (slug) {
-      setCourse(courseStore.getCourseBySlug(slug));
+      let slugCourse = courseStore.getCourseBySlug(slug);
+      if (!slugCourse) {
+        props.history.push("/404");
+      }
+      setCourse(slugCourse);
     }
 
     return () => {
       authorStore.removeChangeListener(onAuthorChange);
       courseStore.removeChangeListener(onCourseChange);
     };
-  }, [props.match.params.slug, courses.length]);
+  }, [props.match.params.slug, courses.length, props.history]);
 
   const onAuthorChange = () => {
     setAuthors(authorStore.getAuthors());
@@ -78,9 +82,10 @@ const ManageCoursePage = (props) => {
 
   const handleDelete = (event) => {
     event.preventDefault();
+    props.history.push("/courses");
     courseActions.deleteCourse(course.id).then(() => {
       toast.success("Course deleted.");
-      props.history.push("/courses");
+      return;
     });
   };
 
